@@ -1,6 +1,8 @@
 // Loading and saving game data.
 use crate::board::{Board, Cell, SIZE, new_board};
 use std::fs;
+use std::fs::OpenOptions;
+use std::io::Write;
 pub const MIN_SHIP: usize = 2;
 pub const MAX_SHIP: usize = 5;
 
@@ -213,14 +215,4 @@ pub fn load_scores(_path: &str) -> Vec<ScoreRecord> {
 
 // TEMPORARY: lets the game run before load_fleet works.
 // Task 5 replaces the call in main.rs; then delete this function.
-pub fn default_fleet() -> Vec<ShipSpec> {
-    let lengths = [5, 4, 3, 3, 2];
-    let mut fleet = Vec::new();
-    for length in lengths {
-        fleet.push(ShipSpec {
-            name: format!("Ship{length}"),
-            length,
-        });
-    }
-    fleet
-}
+
