@@ -228,8 +228,26 @@ pub fn append_score(path: &str, record: &ScoreRecord) -> bool {
 // Read every valid score line from path. A missing file is normal on the
 // first run: return an empty Vec and print nothing. Skip lines that
 // parse_score rejects.
-pub fn load_scores(_path: &str) -> Vec<ScoreRecord> {
-    todo!("Task 7: load_scores")
+pub fn load_scores(path: &str) -> Vec<ScoreRecord> {
+    let mut records = Vec::new();
+
+    match fs::read_to_string(path) {
+       Ok(text) => {
+          for line in text.lines() {
+           match parse_score(line) {
+               Some(record) => records.push(record),
+                    None => continue,
+              }
+           }
+        }
+        Err(error) => {
+            if error.kind() != std::io::ErrorKind::NotFound {
+            eprintln!("Error reading scores file: {}", error);
+            }
+        }
+    }
+
+  records
 }
 
 // TEMPORARY: lets the game run before load_fleet works.
